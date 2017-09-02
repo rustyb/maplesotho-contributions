@@ -1,0 +1,76 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  color: rgb(73,73,73);
+}
+
+*, .body {
+  background-color: transparent;
+}
+
+.App {
+	height: 100vh
+}
+.SingleDatePicker__picker {
+	z-index: 50 !important;
+}
+.Selector {
+  background: $secondary-color;//rgb(73,73,73);
+  dt, dd {color: #fff;}
+  dt {width: 45%;}
+  dd {width: 55%;}
+  .Selector--main {
+		padding: 1rem .5rem;
+    h1, h3, h4, h5, .icon, mark {
+			color: rgb(250,250,250);
+		}
+		h3, h4 {
+			line-height: 1.2rem;
+			margin: .4rem 0 ;
+		}
+		.select--loading {
+			* {
+				display: inline-block;
+			}
+			.select--loading-svg {
+				margin: 1rem 0 0 .8rem;
+				vertical-align: middle;
+			}
+		}
+  }
+	.project--link {
+		display: inline-block;
+		margin-top: .3rem;
+		mark, h3, .icon {
+			display: inline-block;
+			vertical-align: middle;
+	 	}
+		mark {
+			font-size: 9px;
+		}
+		.project--link--logo {
+			width: 25px;
+			margin-right: .4rem;
+			margin-top: .2rem;
+		}
+		mark {
+			padding: .25rem;
+			margin-top: .1rem;
+			background: rgba(208, 64, 3, 1)
+		}
+	}
+	@media (min-width: 800px) {
+		height: 100%;
+		@include column(1/5, $gutter: 0);
+	}
+}
+
+.main {
+  background-color: rgb(230,230,230);
+	@media (min-width: 800px) {
+		@include column(4/5, $gutter: 0);
+	}
+}
