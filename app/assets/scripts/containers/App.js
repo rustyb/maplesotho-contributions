@@ -5,15 +5,17 @@ import { connect } from 'react-redux';
 import Visualization from '../components/Visualization';
 import Summary from '../components/Summary';
 import {
-  fetchDistricts
+  fetchDistricts,
+  fetchUsers
 } from '../actions/action-creators';
 class App extends Component {
   componentDidMount () {
     this.props._fetchDistricts();
+    this.props._fetchUsers();
   }
   render () {
     const showVisualizationSuggestor = () => {
-      if (this.props.districtsFetched ) {
+      if (this.props.districtsFetched && this.props.usersFetched) {
         return (
           <Visualization className='Visualization'/>
           );
@@ -21,7 +23,7 @@ class App extends Component {
     };
 
     const showSum = () => {
-        if (this.props.districtsFetched ) {
+        if (this.props.districtsFetched && this.props.usersFetched ) {
           return (<Summary />)
         }
     };
@@ -41,12 +43,14 @@ class App extends Component {
 const selector = (state) => {
   return {
     districtsFetched: state.maplesothoDistricts.fetched,
+    usersFetched: state.maplesothoUsers.fetched,
   };
 };
 
 const dispatcher = (dispatch) => {
   return {
-    _fetchDistricts: (dateFrom) => dispatch(fetchDistricts(dateFrom))
+    _fetchDistricts: (dateFrom) => dispatch(fetchDistricts(dateFrom)),
+    _fetchUsers: (dateFrom) => dispatch(fetchUsers(dateFrom))
   };
 };
 

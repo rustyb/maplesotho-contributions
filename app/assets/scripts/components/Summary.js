@@ -41,7 +41,14 @@ class Summary extends Component {
         <div className="selector--body">
         <dl className="dl-horizontal">
           <dt>Total</dt>
-          <dd>{numeral(_.sum(this.props.districts.map(x=>+x.t))).format()}</dd>
+          <dd>{numeral(this.props.districts[null][0].t).format()}</dd>
+          {districts.map((dis) => {
+            return (<div key={dis}>
+              <dt>{dis}</dt>
+              <dd>{numeral(this.props.districts[dis][0].t).format()}</dd>
+              </div>
+              )
+          })}
         </dl>
         </div>
       </div>
@@ -51,7 +58,8 @@ class Summary extends Component {
 
 const selector = (state) => {
   return {
-    districts: state.maplesothoDistricts.districts
+    districts: state.maplesothoDistricts.districts,
+    users: state.maplesothoUsers.users
   };
 };
 

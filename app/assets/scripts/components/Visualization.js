@@ -5,7 +5,8 @@ import moment from 'moment'
 import { DateRangePicker, DayPickerRangeController } from 'react-dates';
 import _ from 'lodash';
 import {
-  fetchDistricts
+  fetchDistricts,
+  fetchUsers
 } from '../actions/action-creators';
 
 class Visualizaiton extends Component {
@@ -13,24 +14,42 @@ class Visualizaiton extends Component {
     super(props);
     this.renderRow = this.renderRow.bind(this);
     this.renderTable = this.renderTable.bind(this);
+    
     this.getNewStats = this.getNewStats.bind(this);
+    this.getUserStats = this.getUserStats.bind(this);
+    
     this.onFocusChange = this.onFocusChange.bind(this);
+
     this.state = {startDate: moment().subtract(10, 'days'), endDate: moment(), focusedInput: null};
   }
 
   componentDidMount () {
     this.props._fetchDistricts();
+    this.props._fetchUsers();
+  }
+
+  setDates (startDate, endDate) {
+    this.setState({ startDate: startDate, endDate: endDate, })
   }
 
   getNewStats (startDate, endDate) {
-    this.setState({ startDate: startDate, endDate: endDate, })
+    this.setDates(startDate, endDate)
 
-    return this.props._fetchDistricts(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'));
+    return this.props._fetchDistricts(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD')) && this.getUserStats(startDate, endDate);
+  }
+
+  getUserStats (startDate, endDate) {
+    this.setDates(startDate, endDate)
+
+    return this.props._fetchUsers(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'));
   }
 
   componentDidUpdate (prevProps, prevState) {
     if (prevProps.districtsFetched !== this.props.districtsFetched) {
-      return this.getNewStats();
+      this.getNewStats();
+    }
+    if (prevProps.usersFetched !== this.props.usersFetched) {
+      this.getUserStats();
     }
   }
 
@@ -72,7 +91,7 @@ class Visualizaiton extends Component {
   }
 
   render () {
-    const districts = this.props.districts;
+    const users = this.props.users;
     let focusedInput = null;
     return (
       <div>
@@ -91,7 +110,7 @@ class Visualizaiton extends Component {
       
       <section className="panel">
         <header className="panel__header">
-          <h1 className="panel__title">{this.props.districts.length} users loaded with an overall edit count of {numeral(_.sum(this.props.districts.map(x=>+x.t))).format()}</h1>
+          <h1 className="panel__title">{this.props.users.length} users loaded with an overall edit count of {numeral(_.sum(this.props.users.map(x=>+x.t))).format()}</h1>
         </header>
         <div className="area">
         <table  className="table">
@@ -105,7 +124,7 @@ class Visualizaiton extends Component {
           </tr>
         </thead>
         <tbody>
-          {districts.map((dis) => {
+          {users.map((dis) => {
             return this.renderRow(dis)
           })}
           </tbody>
@@ -122,13 +141,16 @@ class Visualizaiton extends Component {
 const selector = (state) => {
   return {
     districts: state.maplesothoDistricts.districts,
+    users: state.maplesothoUsers.users,
     districtsFetched: state.maplesothoDistricts.fetched,
+    usersFetched: state.maplesothoDistricts.fetched,
   };
 };
 
 const dispatcher = (dispatch) => {
   return {
-    _fetchDistricts: (dateFrom, dateTo) => dispatch(fetchDistricts(dateFrom, dateTo))
+    _fetchDistricts: (dateFrom, dateTo) => dispatch(fetchDistricts(dateFrom, dateTo)),
+    _fetchUsers: (dateFrom, dateTo) => dispatch(fetchUsers(dateFrom, dateTo))
   };
 };
 
