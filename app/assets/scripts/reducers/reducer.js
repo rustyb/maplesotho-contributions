@@ -39,7 +39,24 @@ const maplesothoUsers = (state = {users: [], fetching: false, fetched: false}, a
   return state;
 };
 
+const maplesothoEditors = (state = {editors: [], fetching: false, fetched: false}, action) => {
+  switch (action.type) {
+    case actions.REQUEST_EDITORS:
+      state = cloneDeep(state);
+      state.fetching = true;
+      break;
+    case actions.RECIEVE_EDITORS:
+      state = cloneDeep(state);
+      state.editors = action.json;
+      state.fetching = false;
+      state.fetched = true;
+      break;
+  }
+  return state;
+};
+
 export default combineReducers({
  maplesothoDistricts,
  maplesothoUsers,
+ maplesothoEditors
 });

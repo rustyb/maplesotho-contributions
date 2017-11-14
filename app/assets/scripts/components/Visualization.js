@@ -6,7 +6,8 @@ import { DateRangePicker, DayPickerRangeController } from 'react-dates';
 import _ from 'lodash';
 import {
   fetchDistricts,
-  fetchUsers
+  fetchUsers,
+  fetchEditors
 } from '../actions/action-creators';
 
 class Visualizaiton extends Component {
@@ -26,6 +27,7 @@ class Visualizaiton extends Component {
   componentDidMount () {
     this.props._fetchDistricts();
     this.props._fetchUsers();
+    this.props._fetchEditors();
   }
 
   setDates (startDate, endDate) {
@@ -144,13 +146,16 @@ const selector = (state) => {
     users: state.maplesothoUsers.users,
     districtsFetched: state.maplesothoDistricts.fetched,
     usersFetched: state.maplesothoDistricts.fetched,
+    editorsFetched: state.maplesothoEditors.fetched,
+    editors: state.maplesothoEditors.editors,
   };
 };
 
 const dispatcher = (dispatch) => {
   return {
     _fetchDistricts: (dateFrom, dateTo) => dispatch(fetchDistricts(dateFrom, dateTo)),
-    _fetchUsers: (dateFrom, dateTo) => dispatch(fetchUsers(dateFrom, dateTo))
+    _fetchUsers: (dateFrom, dateTo) => dispatch(fetchUsers(dateFrom, dateTo)),
+    _fetchEditors: (...props) => dispatch(fetchEditors(...props))
   };
 };
 

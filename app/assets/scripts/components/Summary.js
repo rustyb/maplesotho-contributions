@@ -6,6 +6,29 @@ class Summary extends Component {
   constructor (props) {
     super(props);
     this.renderTable = this.renderTable.bind(this);
+    this.renderEditors = this.renderEditors.bind(this);
+  }
+
+  renderEditors(data) {
+    // const rows = data.reverse().map(row => {return this.renderRow(row)});
+    const total = data ? _.sumBy(data, 'number') : 0
+    return (<div key="editors">
+      <h2>Editor Share</h2>
+      <div className="selector--body">
+        <dl className="dl-horizontal">
+          {/*<dt>Total</dt>
+                    <dd>{numeral(total).format()}</dd>*/}
+          {data.reverse().map((ed) => {
+            return (<div key={ed.editor}>
+              <dt>{ed.editor}</dt>
+              <dd>{numeral(ed.number/total).format('0.00 %')}</dd>
+              </div>
+              )
+          })}
+        </dl>
+        </div>
+      </div>
+      )
   }
 
   renderTable (district, data) {
@@ -50,7 +73,11 @@ class Summary extends Component {
               )
           })}
         </dl>
+        <div>
+          {this.props.editors ? this.renderEditors(this.props.editors) : 'No editors'}
         </div>
+        </div>
+        
       </div>
     );
   }
@@ -59,7 +86,8 @@ class Summary extends Component {
 const selector = (state) => {
   return {
     districts: state.maplesothoDistricts.districts,
-    users: state.maplesothoUsers.users
+    users: state.maplesothoUsers.users,
+    editors: state.maplesothoEditors.editors
   };
 };
 

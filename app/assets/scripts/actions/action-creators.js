@@ -67,3 +67,35 @@ export function fetchUsers (dateFrom, dateTo) {
       });
   };
 }
+
+
+function requestEditors () {
+  return {
+    type: actions.REQUEST_EDITORS
+  };
+}
+
+function recieveEditors (json) {
+  return {
+    type: actions.RECIEVE_EDITORS,
+    json: json,
+    receivedAt: Date.now()
+  };
+}
+
+export function fetchEditors () {
+  return (dispatch) => {
+    dispatch(requestEditors());
+    // let from_date = dateFrom || moment().subtract(10, 'days').format('YYYY-MM-DD')
+    // let to_date = dateTo || moment().format('YYYY-MM-DD')
+    // let url = `${config.api}/users?date_from=${from_date}&date_to=${to_date}`;
+    let url = `${config.api}/editors`;
+    return fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        dispatch(recieveEditors(json));
+      });
+  };
+}
