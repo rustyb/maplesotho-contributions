@@ -1,5 +1,6 @@
 import React from 'react';
 import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
 import * as actions from '../actions/action-types';
 import { cloneDeep, includes } from 'lodash';
 
@@ -55,8 +56,12 @@ const maplesothoEditors = (state = {editors: [], fetching: false, fetched: false
   return state;
 };
 
-export default combineReducers({
- maplesothoDistricts,
- maplesothoUsers,
- maplesothoEditors
-});
+export const reducers = {
+  maplesothoDistricts,
+   maplesothoUsers,
+   maplesothoEditors
+}
+
+export default combineReducers(Object.assign({}, reducers, {
+  routing: routerReducer
+}))

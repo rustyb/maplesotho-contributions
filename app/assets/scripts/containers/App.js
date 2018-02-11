@@ -17,7 +17,7 @@ class App extends Component {
     const showVisualizationSuggestor = () => {
       if (this.props.districtsFetched && this.props.usersFetched) {
         return (
-          <Visualization className='Visualization'/>
+          <Visualization className='Visualization' location={this.props.location}/>
           );
       }
     };

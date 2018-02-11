@@ -18,7 +18,9 @@ class Summary extends Component {
         <dl className="dl-horizontal">
           {/*<dt>Total</dt>
                     <dd>{numeral(total).format()}</dd>*/}
-          {data.reverse().map((ed) => {
+          {data.sort(
+            function(a, b) {return b.number - a.number }
+            ).slice(0, 8).map((ed) => {
             return (<div key={ed.editor}>
               <dt>{ed.editor}</dt>
               <dd>{numeral(ed.number/total).format('0.00 %')}</dd>

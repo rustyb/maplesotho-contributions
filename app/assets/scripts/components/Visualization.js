@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import numeral from 'numeral';
 import moment from 'moment'
+import {browserHistory} from 'react-router';
 import { DateRangePicker, DayPickerRangeController } from 'react-dates';
 import _ from 'lodash';
 import {
@@ -9,6 +10,9 @@ import {
   fetchUsers,
   fetchEditors
 } from '../actions/action-creators';
+
+import {buildQS} from '../lib/buildurl';
+
 
 class Visualizaiton extends Component {
   constructor (props) {
@@ -20,13 +24,20 @@ class Visualizaiton extends Component {
     this.getUserStats = this.getUserStats.bind(this);
     
     this.onFocusChange = this.onFocusChange.bind(this);
+    let query = _.clone(this.props.location.query);
 
-    this.state = {startDate: moment().subtract(10, 'days'), endDate: moment(), focusedInput: null};
+    this.state = {startDate: moment(query.start_date) || moment().subtract(10, 'days'), endDate: moment(query.end_date) ||  moment(), focusedInput: null};
   }
 
   componentDidMount () {
-    this.props._fetchDistricts();
-    this.props._fetchUsers();
+    let query = _.clone(this.props.location.query);
+    if (query.start_date) {
+      this.props._fetchDistricts(moment(query.start_date), moment(query.end_date)) && this.getUserStats(moment(query.start_date), moment(query.end_date));
+    } else {
+      this.props._fetchDistricts();
+      this.props._fetchUsers();
+    }
+
     this.props._fetchEditors();
   }
 
@@ -36,6 +47,13 @@ class Visualizaiton extends Component {
 
   getNewStats (startDate, endDate) {
     this.setDates(startDate, endDate)
+    // let query = {}
+    let query = _.clone(this.props.location.query);
+    
+    query.start_date = startDate.format('YYYY-MM-DD');
+    query.end_date = endDate.format('YYYY-MM-DD');
+
+    browserHistory.push(`/?${buildQS(query)}`);
 
     return this.props._fetchDistricts(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD')) && this.getUserStats(startDate, endDate);
   }
