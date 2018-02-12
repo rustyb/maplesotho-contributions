@@ -113,10 +113,12 @@ class Visualizaiton extends Component {
   render () {
     const users = this.props.users;
     let focusedInput = null;
+    let query = _.clone(this.props.location.query);
+
     return (
       <div>
         <section className="panel">
-        Choose the date to show stats from: {` `}
+        <span style={{marginLeft: '1rem'}} >Choose the date to show stats from:</span> {` `}
           <DateRangePicker
             startDate={this.state.startDate}
             endDate={this.state.endDate}
@@ -126,6 +128,7 @@ class Visualizaiton extends Component {
             isOutsideRange={() => false}
             displayFormat="DD MMM YY"
           />
+          <a style={{marginLeft: '1rem'}} href={`https://national.maplesotho.com/?${buildQS(query)}`}>Permalink</a>
         </section>
       
       <section className="panel">
